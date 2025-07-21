@@ -11,7 +11,14 @@ language_codes = {
     "French": "fr-FR",
     "German": "de-DE"
 }
-
+translate_codes = {
+    "English": "en",
+    "Hindi": "hi",
+    "Tamil": "ta",
+    "Telugu": "te",
+    "French": "fr",
+    "German": "de"
+}
 def recognize_speech():
     recognizer = sr.Recognizer()
     lang_code = language_codes[language_var.get()]
