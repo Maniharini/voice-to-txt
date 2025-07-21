@@ -1,68 +1,62 @@
+from flask import Flask, request, render_template_string
 import speech_recognition as sr
-import tkinter as tk
-from tkinter import messagebox
-from googletrans import Translator
+import os
 
-# Language dictionary
-language_codes = {
-    "English (India)": "en-IN",
-    "Hindi": "hi-IN",
-    "Tamil": "ta-IN",
-    "Telugu": "te-IN",
-    "French": "fr-FR",
-    "German": "de-DE"
-}
+app = Flask(__name__)
 
-translate_codes = {
-    "English": "en",
-    "Hindi": "hi",
-    "Tamil": "ta",
-    "Telugu": "te",
-    "French": "fr",
-    "German": "de"
-}
+# HTML form and display
+HTML_FORM = '''
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice to Text</title>
+</head>
+<body>
+    <h2>Upload .wav File</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="audio" accept=".wav" required>
+        <button type="submit">Convert</button>
+    </form>
 
-def recognize_and_translate():
-    recognizer = sr.Recognizer()
-    source_lang = language_codes[source_lang_var.get()]
-    target_lang = translate_codes[target_lang_var.get()]
+    {% if result %}
+        <h3>Transcribed Text:</h3>
+        <p>{{ result }}</p>
+    {% endif %}
 
-    with sr.Microphone() as source:
-        print("Listening...")
-        audio = recognizer.listen(source)
-    try:
-        # Speech to Text
-        text = recognizer.recognize_google(audio, language=source_lang)
-        print(f"Recognized Text: {text}")
-        # Translate Text
-        translator = Translator()
-        translated = translator.translate(text, dest=target_lang)
-        print(f"Translated Text: {translated.text}")
-        text_box.delete("1.0", tk.END)
-        text_box.insert(tk.END, translated.text)
-    except sr.UnknownValueError:
-        messagebox.showerror("Error", "Could not understand the audio.")
-    except sr.RequestError:
-        messagebox.showerror("Error", "Request failed. Check internet connection.")
+    {% if error %}
+        <h3 style="color:red;">Error:</h3>
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
+'''
 
-# GUI
-app = tk.Tk()
-app.title("Voice Translator")
-app.geometry("500x400")
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    result = None
+    error = None
 
-tk.Label(app, text="Select Input Voice Language", font=("Arial", 12)).pack(pady=5)
-source_lang_var = tk.StringVar(app)
-source_lang_var.set("English (India)")
-tk.OptionMenu(app, source_lang_var, *language_codes.keys()).pack(pady=5)
+    if request.method == 'POST':
+        if 'audio' not in request.files:
+            error = "No audio file uploaded"
+        else:
+            file = request.files['audio']
+            file_path = "temp.wav"
+            file.save(file_path)
 
-tk.Label(app, text="Translate To", font=("Arial", 12)).pack(pady=5)
-target_lang_var = tk.StringVar(app)
-target_lang_var.set("Hindi")
-tk.OptionMenu(app, target_lang_var, *translate_codes.keys()).pack(pady=5)
+            recognizer = sr.Recognizer()
+            with sr.AudioFile(file_path) as source:
+                audio_data = recognizer.record(source)
+                try:
+                    result = recognizer.recognize_google(audio_data)
+                except sr.UnknownValueError:
+                    error = "Could not understand the audio"
+                except sr.RequestError:
+                    error = "Speech recognition service error"
+                finally:
+                    os.remove(file_path)
 
-tk.Button(app, text="Start Recording & Translate", command=recognize_and_translate, font=("Arial", 12)).pack(pady=10)
+    return render_template_string(HTML_FORM, result=result, error=error)
 
-text_box = tk.Text(app, height=10, width=50)
-text_box.pack(pady=10)
-
-app.mainloop()
+if __name__ == '__main__':
+    app.run(debug=True)
