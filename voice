@@ -1,0 +1,51 @@
+mport speech_recognition as sr
+import tkinter as tk
+from tkinter import messagebox
+
+# Supported languages
+language_codes = {
+    "English (India)": "en-IN",
+    "Hindi": "hi-IN",
+    "Tamil": "ta-IN",
+    "Telugu": "te-IN",
+    "French": "fr-FR",
+    "German": "de-DE"
+}
+
+def recognize_speech():
+    recognizer = sr.Recognizer()
+    lang_code = language_codes[language_var.get()]
+    with sr.Microphone() as source:
+        print("Listening...")
+        audio = recognizer.listen(source)
+    try:
+        text = recognizer.recognize_google(audio, language=lang_code)
+        text_box.delete("1.0", tk.END)
+        text_box.insert(tk.END, text)
+    except sr.UnknownValueError:
+        messagebox.showerror("Error", "Could not understand audio.")
+    except sr.RequestError:
+        messagebox.showerror("Error", "Could not request results.")
+
+# GUI
+app = tk.Tk()
+app.title("Multilingual Voice to Text Converter")
+app.geometry("450x350")
+
+label = tk.Label(app, text="Select Language & Speak", font=("Arial", 14))
+label.pack(pady=10)
+
+# Language dropdown
+language_var = tk.StringVar(app)
+language_var.set("English (India)")
+language_menu = tk.OptionMenu(app, language_var, *language_codes.keys())
+language_menu.config(font=("Arial", 12))
+language_menu.pack(pady=5)
+
+record_btn = tk.Button(app, text="Start Recording", command=recognize_speech, font=("Arial", 12))
+record_btn.pack(pady=10)
+
+text_box = tk.Text(app, height=10, width=50)
+text_box.pack(pady=10)
+
+app.mainloop()
