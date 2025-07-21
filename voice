@@ -1,8 +1,9 @@
-mport speech_recognition as sr
+import speech_recognition as sr
 import tkinter as tk
 from tkinter import messagebox
+from googletrans import Translator
 
-# Supported languages
+# Language dictionary
 language_codes = {
     "English (India)": "en-IN",
     "Hindi": "hi-IN",
@@ -11,6 +12,7 @@ language_codes = {
     "French": "fr-FR",
     "German": "de-DE"
 }
+
 translate_codes = {
     "English": "en",
     "Hindi": "hi",
@@ -19,38 +21,46 @@ translate_codes = {
     "French": "fr",
     "German": "de"
 }
-def recognize_speech():
+
+def recognize_and_translate():
     recognizer = sr.Recognizer()
-    lang_code = language_codes[language_var.get()]
+    source_lang = language_codes[source_lang_var.get()]
+    target_lang = translate_codes[target_lang_var.get()]
+
     with sr.Microphone() as source:
         print("Listening...")
         audio = recognizer.listen(source)
     try:
-        text = recognizer.recognize_google(audio, language=lang_code)
+        # Speech to Text
+        text = recognizer.recognize_google(audio, language=source_lang)
+        print(f"Recognized Text: {text}")
+        # Translate Text
+        translator = Translator()
+        translated = translator.translate(text, dest=target_lang)
+        print(f"Translated Text: {translated.text}")
         text_box.delete("1.0", tk.END)
-        text_box.insert(tk.END, text)
+        text_box.insert(tk.END, translated.text)
     except sr.UnknownValueError:
-        messagebox.showerror("Error", "Could not understand audio.")
+        messagebox.showerror("Error", "Could not understand the audio.")
     except sr.RequestError:
-        messagebox.showerror("Error", "Could not request results.")
+        messagebox.showerror("Error", "Request failed. Check internet connection.")
 
 # GUI
 app = tk.Tk()
-app.title("Multilingual Voice to Text Converter")
-app.geometry("450x350")
+app.title("Voice Translator")
+app.geometry("500x400")
 
-label = tk.Label(app, text="Select Language & Speak", font=("Arial", 14))
-label.pack(pady=10)
+tk.Label(app, text="Select Input Voice Language", font=("Arial", 12)).pack(pady=5)
+source_lang_var = tk.StringVar(app)
+source_lang_var.set("English (India)")
+tk.OptionMenu(app, source_lang_var, *language_codes.keys()).pack(pady=5)
 
-# Language dropdown
-language_var = tk.StringVar(app)
-language_var.set("English (India)")
-language_menu = tk.OptionMenu(app, language_var, *language_codes.keys())
-language_menu.config(font=("Arial", 12))
-language_menu.pack(pady=5)
+tk.Label(app, text="Translate To", font=("Arial", 12)).pack(pady=5)
+target_lang_var = tk.StringVar(app)
+target_lang_var.set("Hindi")
+tk.OptionMenu(app, target_lang_var, *translate_codes.keys()).pack(pady=5)
 
-record_btn = tk.Button(app, text="Start Recording", command=recognize_speech, font=("Arial", 12))
-record_btn.pack(pady=10)
+tk.Button(app, text="Start Recording & Translate", command=recognize_and_translate, font=("Arial", 12)).pack(pady=10)
 
 text_box = tk.Text(app, height=10, width=50)
 text_box.pack(pady=10)
