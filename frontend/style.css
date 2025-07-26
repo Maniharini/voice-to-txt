@@ -1,33 +1,33 @@
 body {
   font-family: 'Inter', sans-serif;
-  background: #f4f7fc;
+  background: linear-gradient(135deg, #f0f4ff, #e5ecf6);
   margin: 0;
   padding: 0;
   color: #222;
 }
 
 .container {
-  max-width: 800px;
-  margin: auto;
-  padding: 30px;
-  background: #fff;
-  margin-top: 50px;
+  max-width: 900px;
+  margin: 40px auto;
+  background: white;
+  padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
 }
 
 h1 {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
+  color: #0056b3;
   text-align: center;
-  color: #0a58ca;
+  margin-bottom: 20px;
 }
 
-h1 span {
-  color: #333;
+h1 i {
+  margin-right: 10px;
 }
 
 h2 {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   margin-top: 30px;
   color: #333;
 }
@@ -37,7 +37,7 @@ h2 {
   flex-wrap: wrap;
   align-items: center;
   gap: 15px;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 label {
@@ -45,10 +45,11 @@ label {
 }
 
 select, input[type="file"] {
-  padding: 8px 10px;
+  padding: 10px 12px;
   font-size: 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  min-width: 180px;
 }
 
 button {
@@ -62,7 +63,7 @@ button {
 }
 
 .btn-primary {
-  background-color: #0a58ca;
+  background-color: #0d6efd;
   color: white;
 }
 
@@ -82,8 +83,10 @@ button {
 #output {
   margin-top: 30px;
   padding: 20px;
-  background: #e9f0ff;
-  border-left: 5px solid #0a58ca;
-  border-radius: 10px;
+  background: #eaf3ff;
+  border-left: 6px solid #0d6efd;
+  border-radius: 12px;
   display: none;
+  white-space: pre-wrap;
+  font-size: 1.05rem;
 }
