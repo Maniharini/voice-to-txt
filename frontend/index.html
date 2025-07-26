@@ -2,49 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Voice to Text Converter</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>🎙️ Smart Voice Translator</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
   <div class="container">
-    <h1><i class="fas fa-microphone"></i> Voice to Text Converter</h1>
+    <h1>🌐 Voice to Text + Translate</h1>
 
-    <!-- 🎧 Audio Upload -->
+    <!-- Live Mic Translation Section -->
     <div class="section">
-      <input type="file" id="audioInput" accept="audio/*">
-      <button onclick="uploadAudio()">Convert File</button>
-    </div>
-
-    <!-- 🗣️ Speak & Translate -->
-    <div class="section translate-section">
-      <h2><i class="fas fa-language"></i> Speak & Translate</h2>
-
+      <h2>🎤 Live Microphone Input</h2>
       <label for="inputLanguage">🎙️ Input Language:</label>
       <select id="inputLanguage">
+        <option value="en-US">English</option>
         <option value="ta-IN">Tamil</option>
         <option value="hi-IN">Hindi</option>
-        <option value="en-US">English</option>
         <option value="fr-FR">French</option>
+        <!-- Add more as needed -->
       </select>
 
-      <label for="languageSelect">🌍 Output Language:</label>
+      <label for="languageSelect">🌍 Translate To:</label>
       <select id="languageSelect">
         <option value="en">English</option>
         <option value="ta">Tamil</option>
         <option value="hi">Hindi</option>
         <option value="fr">French</option>
+        <!-- Add more as needed -->
       </select>
 
-      <button onclick="startListeningWithTranslation()">🎤 Speak & Translate</button>
+      <button onclick="startListeningWithTranslation()">🎙️ Start Listening</button>
+      <p id="liveResult"></p>
+      <p id="translatedText"></p>
     </div>
 
-    <!-- 💬 Results -->
-    <div id="output" class="section">
-      <p id="liveResult">📝 You said: ...</p>
-      <p id="translatedText">🌐 Translated: ...</p>
+    <!-- Upload Audio File Section -->
+    <div class="section">
+      <h2>📁 Upload Audio File</h2>
+      <input type="file" id="audioFile" accept="audio/*" />
+      <button onclick="uploadAudio()">📤 Upload & Translate</button>
+      <p id="audioResult"></p>
+      <p id="audioTranslation"></p>
     </div>
   </div>
 
