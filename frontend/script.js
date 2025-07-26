@@ -1,56 +1,41 @@
-// 🎧 Upload audio file to backend and get transcription
+// Upload audio file and process it through Flask + Whisper
 function uploadAudio() {
-  const input = document.getElementById("audioInput");
-  const file = input.files[0];
-  const formData = new FormData();
-  formData.append("file", file);
+  const fileInput = document.getElementById('audioFile');
+  const targetLang = document.getElementById("languageSelect").value;
+  const file = fileInput.files[0];
 
-  fetch("http://127.0.0.1:5000/upload", {
-    method: "POST",
-    body: formData,
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      document.getElementById("result").textContent = "📝 Text: " + data.text;
-    })
-    .catch((err) => {
-      console.error("Error:", err);
-    });
-}
-
-// 🎙 Live Mic to Text (no translation)
-function startListening() {
-  const liveResult = document.getElementById("liveResult");
-
-  if (!('webkitSpeechRecognition' in window)) {
-    liveResult.textContent = "❌ Your browser doesn't support live voice input.";
+  if (!file) {
+    alert("Please upload an audio file.");
     return;
   }
 
-  const recognition = new webkitSpeechRecognition();
-  recognition.lang = 'en-US'; // Default language
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+  const formData = new FormData();
+  formData.append("audio", file);
+  formData.append("targetLang", targetLang);
 
-  recognition.start();
-  liveResult.textContent = "🎤 Listening...";
+  fetch("http://127.0.0.1:5000/upload-audio", {
+    method: "POST",
+    body: formData,
+  })
+    .then(res => res.json())
+    .then(data => {
+      const transcript = data.transcript || "❌ Failed to transcribe.";
+      const translation = data.translation || "❌ Failed to translate.";
 
-  recognition.onresult = function(event) {
-    const transcript = event.results[0][0].transcript;
-    liveResult.textContent = "📝 Text: " + transcript;
-  };
-
-  recognition.onerror = function(event) {
-    liveResult.textContent = "❌ Error: " + event.error;
-  };
+      document.getElementById("audioResult").textContent = `📝 Transcript: ${transcript}`;
+      document.getElementById("audioTranslation").textContent = `🌍 Translated: ${translation}`;
+    })
+    .catch(err => {
+      console.error("Upload error:", err);
+      alert("❌ Failed to process audio.");
+    });
 }
 
-// 🎙 Speak in one language → 🌐 Translate to another
+// Start live microphone input and speech recognition
 function startListeningWithTranslation() {
   const result = document.getElementById("liveResult");
   const translated = document.getElementById("translatedText");
 
-  // Get selected input and target languages
   const inputLang = document.getElementById("inputLanguage").value;
   const targetLang = document.getElementById("languageSelect").value;
 
@@ -71,7 +56,7 @@ function startListeningWithTranslation() {
     const transcript = event.results[0][0].transcript;
     result.textContent = "📝 You said: " + transcript;
 
-    // Translate
+    // Translate the transcribed speech
     translateText(transcript, targetLang);
   };
 
@@ -80,15 +65,16 @@ function startListeningWithTranslation() {
   };
 }
 
-// 🌐 Translate function using Google Translate API
+// Translate plain text using Google Translate API
 function translateText(text, targetLang) {
   fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`)
     .then(res => res.json())
     .then(data => {
-      const translated = data[0][0][0];
+      const translated = data[0][0][0] || "❌ Translation failed.";
       document.getElementById("translatedText").textContent = `🌍 Translated: ${translated}`;
     })
     .catch(err => {
       console.error("Translation error:", err);
+      document.getElementById("translatedText").textContent = "❌ Error translating.";
     });
 }
