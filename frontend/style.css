@@ -1,75 +1,5 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #f5f7fa;
-  color: #333;
-}
-
-.container {
-  max-width: 700px;
-  margin: 40px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-h1 {
-  margin-bottom: 30px;
-  color: #2c3e50;
-}
-
-.section {
-  margin-bottom: 30px;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  margin-top: 10px;
-  background-color: #007bff;
-  border: none;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-input[type="file"] {
-  padding: 8px;
-  margin-top: 10px;
-}
-
-select {
-  padding: 8px;
-  margin: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-label {
-  display: block;
-  margin-top: 15px;
-  font-weight: bold;
-}
-
-#output p {
-  font-size: 18px;
-  margin: 10px 0;
-}
-
-.translate-section h2 {
-  color: #16a085;
-}
-
-/* Reset default styles */
-body, h1, h2, p, select, input, button {
+/* Reset */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -83,10 +13,10 @@ body {
   padding: 30px;
 }
 
-/* Main card container */
+/* Main container */
 .container {
   max-width: 700px;
-  margin: 0 auto;
+  margin: auto;
   background: #ffffffee;
   padding: 35px 30px;
   border-radius: 20px;
@@ -94,16 +24,22 @@ body {
   text-align: center;
 }
 
-/* Main title */
+/* Titles */
 h1 {
   color: #2c3e50;
-  margin-bottom: 25px;
   font-size: 30px;
+  margin-bottom: 25px;
 }
 
-/* Section spacing */
+h2 {
+  color: #16a085;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* Sections */
 .section {
-  margin-bottom: 35px;
+  margin-bottom: 40px;
 }
 
 /* Buttons */
@@ -124,16 +60,19 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* File input styling */
+/* Input file */
 input[type="file"] {
   margin-top: 10px;
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
   border: 2px dashed #007bff;
   background-color: #f0f8ff;
+  width: 100%;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
-/* Dropdown styling */
+/* Select dropdowns */
 select {
   margin-top: 10px;
   padding: 10px;
@@ -142,6 +81,8 @@ select {
   font-size: 16px;
   background-color: #ffffff;
   color: #333;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 /* Labels */
@@ -150,9 +91,18 @@ label {
   color: #34495e;
   margin-top: 15px;
   display: block;
+  text-align: left;
 }
 
 /* Output text */
-#output p {
-  font-size: 18px;
-  margin-top:
+#liveResult,
+#translatedText,
+#audioResult,
+#audioTranslation {
+  font-size: 16px;
+  margin: 12px 0;
+  padding: 10px;
+  background: #ecf0f1;
+  border-radius: 8px;
+  word-wrap: break-word;
+}
