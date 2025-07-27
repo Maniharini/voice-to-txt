@@ -1,92 +1,41 @@
 body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #f0f4ff, #e5ecf6);
-  margin: 0;
-  padding: 0;
-  color: #222;
-}
-
-.container {
-  max-width: 900px;
-  margin: 40px auto;
-  background: white;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f4f8;
+  color: #333;
+  padding: 30px;
+  text-align: center;
 }
 
 h1 {
-  font-size: 2.4rem;
-  color: #0056b3;
-  text-align: center;
+  color: #0a58ca;
   margin-bottom: 20px;
 }
 
-h1 i {
-  margin-right: 10px;
+form, .mic-section {
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-h2 {
-  font-size: 1.5rem;
-  margin-top: 30px;
-  color: #333;
-}
-
-.input-group, .upload-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-label {
-  font-weight: 600;
-}
-
-select, input[type="file"] {
-  padding: 10px 12px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  min-width: 180px;
-}
-
-button {
-  cursor: pointer;
-  font-weight: 600;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: 0.3s ease;
-}
-
-.btn-primary {
-  background-color: #0d6efd;
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #084298;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background-color: #565e64;
+input, select, button {
+  margin: 10px;
+  padding: 10px;
+  font-size: 16px;
 }
 
 #output {
   margin-top: 30px;
-  padding: 20px;
-  background: #eaf3ff;
-  border-left: 6px solid #0d6efd;
-  border-radius: 12px;
-  display: none;
-  white-space: pre-wrap;
-  font-size: 1.05rem;
+}
+
+#downloadLink, #speakBtn {
+  margin-top: 15px;
+  display: inline-block;
+  padding: 10px 20px;
+  background: #198754;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
 }
